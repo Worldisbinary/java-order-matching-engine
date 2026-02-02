@@ -1,13 +1,15 @@
 package engine.model;
 
 public class Order {
+
     private static int counter = 1;
 
-    private int id;
-    private Side side;
-    private double price;
+    private final int id;
+    private final Side side;
+    private final double price;
     private int quantity;
-    private OrderType type;
+    private final OrderType type;
+    private final long timestamp;
 
     public Order(Side side, double price, int quantity, OrderType type) {
         this.id = counter++;
@@ -15,6 +17,7 @@ public class Order {
         this.price = price;
         this.quantity = quantity;
         this.type = type;
+        this.timestamp = System.nanoTime(); // used for price-time priority
     }
 
     public int getId() {
@@ -33,17 +36,24 @@ public class Order {
         return quantity;
     }
 
-    public void setQuantity(int q) {
-        this.quantity = q;
-    }
-
     public OrderType getType() {
         return type;
     }
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void reduceQuantity(int qty) {
+        this.quantity -= qty;
+    }
+
     @Override
     public String toString() {
-        return "Order{id=" + id + ", side=" + side + ", price=" + price +
-                ", qty=" + quantity + ", type=" + type + "}";
+        return "Order{id=" + id +
+                ", side=" + side +
+                ", price=" + price +
+                ", qty=" + quantity +
+                ", type=" + type + "}";
     }
 }
